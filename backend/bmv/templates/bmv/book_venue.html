@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Book {{ venue.name }} - BookMyVenue</title>
+</head>
+<body>
+    <h2>Book: {{ venue.name }}</h2>
+    <p>Price: ₹{{ venue.price }}</p>
+
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Confirm Booking</button>
+    </form>
+
+    <a href="{% url 'venue_detail' venue.venueID %}">Cancel</a>
+</body>
+</html>

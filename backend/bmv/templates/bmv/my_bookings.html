@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Bookings - BookMyVenue</title>
+</head>
+<body>
+    <h2>My Bookings</h2>
+
+    {% if bookings %}
+        <table border="1" cellpadding="8">
+            <tr>
+                <th>Venue</th>
+                <th>Date</th>
+                <th>Amount</th>
+                <th>Booked On</th>
+            </tr>
+            {% for booking in bookings %}
+            <tr>
+                <td>{{ booking.venue.name }}</td>
+                <td>{{ booking.date }}</td>
+                <td>₹{{ booking.amount }}</td>
+                <td>{{ booking.bookingTime }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>You haven't made any bookings yet.</p>
+    {% endif %}
+
+    <a href="{% url 'user_home' %}">Back to Home</a>
+</body>
+</html>

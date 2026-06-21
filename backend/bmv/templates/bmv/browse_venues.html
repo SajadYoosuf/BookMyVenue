@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Browse Venues - BookMyVenue</title>
+</head>
+<body>
+    <h2>Browse Venues</h2>
+
+    <form method="GET">
+        <input type="text" name="location" placeholder="Location" value="{{ request.GET.location }}">
+        <input type="text" name="category" placeholder="Category" value="{{ request.GET.category }}">
+        <input type="number" name="max_price" placeholder="Max Price" value="{{ request.GET.max_price }}">
+        <button type="submit">Search</button>
+        <a href="{% url 'browse_venues' %}">Clear</a>
+    </form>
+
+    <hr>
+
+    {% if venues %}
+        <table border="1" cellpadding="8">
+            <tr>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Location</th>
+                <th>Capacity</th>
+                <th>Price</th>
+                <th>Action</th>
+            </tr>
+            {% for venue in venues %}
+            <tr>
+                <td>{{ venue.name }}</td>
+                <td>{{ venue.category }}</td>
+                <td>{{ venue.location }}</td>
+                <td>{{ venue.capacity }}</td>
+                <td>₹{{ venue.price }}</td>
+                <td><a href="{% url 'venue_detail' venue.venueID %}">View</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No venues found.</p>
+    {% endif %}
+</body>
+</html>

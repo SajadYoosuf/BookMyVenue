@@ -13,4 +13,8 @@ urlpatterns = [
     path('venues/my/',                  views.my_venues,    name='my_venues'),
     path('venues/edit/<int:venue_id>/', views.edit_venue,   name='edit_venue'),
     path('venues/delete/<int:venue_id>/', views.delete_venue, name='delete_venue'),
+    path('venues/',                       views.browse_venue, name='browse_venues'),
+    path('venues/<int:venue_id>/',         views.venue_detail,  name='venue_detail'),
+    path('venues/<int:venue_id>/book/',    views.book_venue,    name='book_venue'),
+    path('bookings/my/',                   views.my_bookings,   name='my_bookings'),
 ]

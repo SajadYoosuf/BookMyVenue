@@ -4,9 +4,10 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from .supabase_client import supabase
 from .decorators import supabase_login_required
-from .forms import VenueForm
-from .models import Venues
+from .forms import VenueForm,BookingForm
+from .models import Venues,Bookings
 from django.shortcuts import get_object_or_404
+from django.utils import timezone
 
 def user_signup(request):
     if request.method == 'POST':
@@ -142,3 +143,48 @@ def delete_venue(request,venue_id):
         venue.delete()
         return redirect('my_venues')
     return render(request,'bmv/delete_venue.html',{'venue':venue})
+
+def browse_venue(request):
+    venues = Venues.objects.all()
+
+    location = request.GET.get('location')
+    category = request.GET.get('category')
+    max_price= request.GET.get('max_price')
+
+    if location:
+        venues = venues.filter(location__icontains=location)
+    if category:
+        venues = venues.filter(category__icontains=category)
+    if max_price:
+        venues = venues.filter(price__lte=max_price)
+    
+    return render(request,'bmv/browse_venues.html',{'venues':venues})
+
+def venue_detail(request,venue_id):
+    venue = get_object_or_404(Venues,venueID=venue_id)
+    return render(request,'bmv/venue_detail.html',{'venue':venue})
+@supabase_login_required
+def book_venue(request, venue_id):
+    venue = get_object_or_404(Venues, venueID=venue_id)
+
+    if request.method == 'POST':
+        form = BookingForm(request.POST)
+        if form.is_valid():
+            booking = form.save(commit=False)
+            booking.venue = venue
+            booking.amount = venue.price                      
+            booking.bookingTime = timezone.now()
+            booking.user_uid = request.session.get('user_id')   
+            booking.owner_uid = venue.owner_uid                  
+            booking.save()
+            return redirect('my_bookings')
+    else:
+        form = BookingForm()
+
+    return render(request, 'bmv/book_venue.html', {'form': form, 'venue': venue})
+
+@supabase_login_required
+def my_bookings(request):
+    user_id = request.session.get('user_id')
+    bookings = Bookings.objects.filter(user_uid=user_id).select_related('venue')
+    return render(request, 'bmv/my_bookings.html', {'bookings': bookings})

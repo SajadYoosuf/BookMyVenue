@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ venue.name }} - BookMyVenue</title>
+</head>
+<body>
+    <h2>{{ venue.name }}</h2>
+    <p><strong>Category:</strong> {{ venue.category }}</p>
+    <p><strong>Location:</strong> {{ venue.location }}</p>
+    <p><strong>Capacity:</strong> {{ venue.capacity }}</p>
+    <p><strong>Price:</strong> ₹{{ venue.price }}</p>
+
+    <a href="{% url 'book_venue' venue.venueID %}">Book This Venue</a>
+    <br><br>
+    <a href="{% url 'browse_venues' %}">Back to Browse</a>
+</body>
+</html>

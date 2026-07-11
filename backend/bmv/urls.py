@@ -2,19 +2,22 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('',              views.user_login,   name='login'),
-    path('login/',        views.user_login,   name='login'),
-    path('logout/',       views.user_logout,  name='logout'),
-    path('signup/user/',  views.user_signup,  name='user_signup'),
-    path('signup/owner/', views.owner_signup, name='owner_signup'),
-    path('home/user/',    views.user_home,    name='user_home'),
-    path('home/owner/',   views.owner_home,   name='owner_home'),
-    path('venues/add/', views.add_venue,name ='add_venue'),
-    path('venues/my/',                  views.my_venues,    name='my_venues'),
-    path('venues/edit/<int:venue_id>/', views.edit_venue,   name='edit_venue'),
-    path('venues/delete/<int:venue_id>/', views.delete_venue, name='delete_venue'),
-    path('venues/',                       views.browse_venue, name='browse_venues'),
-    path('venues/<int:venue_id>/',         views.venue_detail,  name='venue_detail'),
-    path('venues/<int:venue_id>/book/',    views.book_venue,    name='book_venue'),
-    path('bookings/my/',                   views.my_bookings,   name='my_bookings'),
+    # Auth
+    path('api/signup/', views.signup_api,  name='signup_api'),
+    path('api/login/',  views.login_api,   name='login_api'),
+    path('api/logout/', views.logout_api,  name='logout_api'),
+
+    # Venues — public
+    path('api/venues/',                       views.browse_venues_api, name='browse_venues_api'),
+    path('api/venues/<int:venue_id>/',         views.venue_detail_api,  name='venue_detail_api'),
+
+    # Venues — owner only
+    path('api/venues/my/',                    views.owner_venues_api,  name='owner_venues_api'),
+    path('api/venues/add/',                   views.add_venue_api,     name='add_venue_api'),
+    path('api/venues/<int:venue_id>/edit/',   views.edit_venue_api,    name='edit_venue_api'),
+    path('api/venues/<int:venue_id>/delete/', views.delete_venue_api,  name='delete_venue_api'),
+
+    # Bookings
+    path('api/venues/<int:venue_id>/book/',   views.book_venue_api,    name='book_venue_api'),
+    path('api/bookings/my/',                  views.my_bookings_api,   name='my_bookings_api'),
 ]
